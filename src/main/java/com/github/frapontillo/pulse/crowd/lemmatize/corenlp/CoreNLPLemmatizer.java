@@ -19,9 +19,12 @@ package com.github.frapontillo.pulse.crowd.lemmatize.corenlp;
 import com.github.frapontillo.pulse.crowd.data.entity.Message;
 import com.github.frapontillo.pulse.crowd.data.entity.Token;
 import com.github.frapontillo.pulse.crowd.lemmatize.ILemmatizerOperator;
+import com.github.frapontillo.pulse.spi.IPlugin;
 import com.github.frapontillo.pulse.spi.ISingleablePlugin;
 import com.github.frapontillo.pulse.spi.VoidConfig;
+import com.github.frapontillo.pulse.util.PulseLogger;
 import edu.stanford.nlp.process.Morphology;
+import org.apache.logging.log4j.Logger;
 import rx.Observable;
 
 import java.util.List;
@@ -37,10 +40,15 @@ import java.util.List;
  */
 public class CoreNLPLemmatizer extends ISingleablePlugin<Message, VoidConfig> {
     public final static String PLUGIN_NAME = "lemmatizer-stanford";
+    private final static Logger logger = PulseLogger.getLogger(CoreNLPLemmatizer.class);
     private Morphology morphology;
 
     @Override public String getName() {
         return PLUGIN_NAME;
+    }
+
+    @Override public IPlugin<Message, Message, VoidConfig> getInstance() {
+        return new CoreNLPLemmatizer();
     }
 
     @Override public VoidConfig getNewParameter() {
