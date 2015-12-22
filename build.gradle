@@ -17,6 +17,7 @@
 plugins {
     id 'java'
     id 'maven'
+    id "com.github.frapontillo.switchdependencies" version "0.0.1-alpha.0"
 }
 
 sourceCompatibility = 1.8
@@ -32,10 +33,19 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.frapontillo:crowd-pulse-data-java:0.0.1'
-    compile 'com.github.frapontillo:crowd-pulse-lemmatize:0.0.1'
     compile 'edu.stanford.nlp:stanford-corenlp:3.5.1'
     compile 'edu.stanford.nlp:stanford-corenlp:3.5.1:models'
     // TODO: find a way to add Chinese and Spanish models without manually downloading the jars
     // see http://nlp.stanford.edu/software/corenlp.shtml
+}
+
+switchDependencies {
+    develop {
+        truthy = {
+            compile project(':crowd-pulse-lemmatize')
+        }
+        falsy = {
+            compile 'com.github.frapontillo:crowd-pulse-lemmatize:0.0.1'
+        }
+    }
 }
